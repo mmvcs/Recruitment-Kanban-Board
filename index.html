@@ -19,12 +19,14 @@
                               justify-content: space-between;
                               align-items: center;
                               padding: 0 20px;
+                              flex-wrap: wrap;
                 }
                 header h1 {
                               font-size: 2.5em;
                               text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
                               color: white;
                               flex: 1;
+                              min-width: 300px;
                 }
                 .logo-container {
                               width: 120px;
@@ -36,6 +38,7 @@
                               display: flex;
                               align-items: center;
                               justify-content: center;
+                              flex-shrink: 0;
                 }
                 .logo-container img {
                               max-width: 100%;
@@ -46,8 +49,9 @@
                               display: grid;
                               grid-template-columns: repeat(5, 1fr);
                               gap: 20px;
+                              width: 100%;
                               max-width: 100%;
-                              margin: 0 auto;
+                              margin: 0;
                               padding: 0 20px;
                 }
                 .column {
@@ -57,7 +61,8 @@
                               box-shadow: 0 4px 6px rgba(0,0,0,0.1);
                               display: flex;
                               flex-direction: column;
-                              min-height: 500px;
+                              min-height: 600px;
+                              overflow-y: auto;
                 }
                 .column-title {
                               font-size: 1.1em;
@@ -72,10 +77,9 @@
                               display: flex;
                               flex-direction: column;
                               gap: 10px;
-                              min-height: 500px;
                 }
                 .card {
-                              background: linear-gradient(135deg, #A0826D 100%, #8B7355 100%);
+                              background: linear-gradient(135deg, #A0826D 0%, #8B7355 100%);
                               color: white;
                               padding: 15px;
                               border-radius: 8px;
@@ -83,7 +87,6 @@
                               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                               transition: transform 0.2s, box-shadow 0.2s;
                               user-select: none;
-                              draggable: true;
                               font-weight: bold;
                               font-size: 1em;
                               position: relative;
@@ -91,6 +94,7 @@
                               display: flex;
                               flex-direction: column;
                               justify-content: space-between;
+                              flex-shrink: 0;
                 }
                 .card:hover {
                               transform: translateY(-4px);
