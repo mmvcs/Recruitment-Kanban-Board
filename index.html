@@ -26,11 +26,12 @@
                 }
 
                 .kanban-container { 
-                              display: grid; 
-                              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-                              gap: 20px; 
-                              max-width: 1600px; 
-                              margin: 0 auto; 
+                              display: grid !important; 
+                              grid-template-columns: repeat(5, 1fr) !important; 
+                              gap: 20px !important; 
+                              max-width: 100% !important; 
+                              margin: 0 auto !important; 
+                              padding: 0 20px !important;
                 }
 
                 .column { 
@@ -40,7 +41,7 @@
                               box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
                               display: flex; 
                               flex-direction: column; 
-                              min-height: 600px; 
+                              min-height: 500px !important;
                 }
 
                 .column-title { 
@@ -68,13 +69,52 @@
                               cursor: pointer; 
                               box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
                               transition: transform 0.2s, box-shadow 0.2s; 
+                              user-select: none; 
                               draggable: true; 
                               font-weight: bold; 
+                              font-size: 1em; 
                 }
 
                 .card:hover { 
                               transform: translateY(-4px); 
                               box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+                }
+
+                .card.dragging { 
+                              opacity: 0.5; 
+                }
+
+                .card-subtitle { 
+                              font-size: 0.75em; 
+                              font-weight: normal; 
+                              opacity: 0.9; 
+                              margin-top: 5px; 
+                }
+
+                .card-reminder-badge { 
+                              font-size: 0.7em; 
+                              font-weight: bold; 
+                              margin-top: 8px; 
+                              padding: 4px 8px; 
+                              border-radius: 4px; 
+                              text-align: center; 
+                              line-height: 1.3; 
+                }
+
+                .card-reminder-badge.due { 
+                              background-color: #ff6b6b; 
+                              color: white; 
+                              animation: pulse 2s infinite; 
+                }
+
+                .card-reminder-badge.upcoming { 
+                              background-color: #ffd43b; 
+                              color: #333; 
+                }
+
+                @keyframes pulse { 
+                              0%, 100% { opacity: 1; } 
+                              50% { opacity: 0.7; } 
                 }
 
                 .add-card-btn { 
@@ -85,6 +125,7 @@
                               border-radius: 6px !important; 
                               cursor: pointer !important; 
                               font-weight: bold !important; 
+                              transition: background 0.2s !important; 
                               margin-top: 15px !important; 
                               width: 100% !important; 
                 }
@@ -118,6 +159,9 @@
                               width: 90% !important; 
                               max-width: 550px !important; 
                               box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important; 
+                              position: relative !important; 
+                              z-index: 2001 !important; 
+                              border: none !important; 
                 }
 
                 .modal-content h2 { 
@@ -131,14 +175,16 @@
                 .modal-content label { 
                               color: #2d2d44 !important; 
                               font-weight: 600 !important; 
+                              font-size: 0.95em !important; 
+                              text-transform: uppercase !important; 
+                              letter-spacing: 0.5px !important; 
                               display: block !important; 
                               margin-top: 15px !important; 
                               margin-bottom: 8px !important; 
-                              text-transform: uppercase !important; 
                 }
 
-                .modal-content input,
-                .modal-content textarea,
+                .modal-content input, 
+                .modal-content textarea, 
                 .modal-content select { 
                               width: 100% !important; 
                               background-color: #f5f6ff !important; 
@@ -147,14 +193,22 @@
                               padding: 12px 15px !important; 
                               margin-bottom: 15px !important; 
                               border-radius: 6px !important; 
+                              font-family: inherit !important; 
+                              font-size: 0.95em !important; 
                 }
 
-                .modal-content input:focus,
-                .modal-content textarea:focus,
+                .modal-content input:focus, 
+                .modal-content textarea:focus, 
                 .modal-content select:focus { 
                               outline: none !important; 
                               background-color: #ffffff !important; 
                               border-color: #667eea !important; 
+                              box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1) !important; 
+                }
+
+                .modal-content textarea { 
+                              resize: vertical !important; 
+                              min-height: 120px !important; 
                 }
 
                 .modal-buttons { 
@@ -170,7 +224,11 @@
                               border-radius: 8px !important; 
                               cursor: pointer !important; 
                               font-weight: 600 !important; 
+                              font-size: 0.95em !important; 
+                              text-transform: uppercase !important; 
+                              letter-spacing: 0.5px !important; 
                               flex: 1 !important; 
+                              transition: all 0.3s ease !important; 
                 }
 
                 .modal-buttons .save { 
@@ -178,9 +236,29 @@
                               color: white !important; 
                 }
 
+                .modal-buttons .save:hover { 
+                              transform: translateY(-2px) !important; 
+                              box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3) !important; 
+                }
+
                 .modal-buttons .cancel { 
                               background: #e8e8f0 !important; 
                               color: #2d2d44 !important; 
+                }
+
+                .modal-buttons .cancel:hover { 
+                              background: #d0d0e0 !important; 
+                              transform: translateY(-2px) !important; 
+                }
+
+                .modal-buttons .delete { 
+                              background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%) !important; 
+                              color: white !important; 
+                }
+
+                .modal-buttons .delete:hover { 
+                              transform: translateY(-2px) !important; 
+                              box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3) !important; 
                 }
 
                 .delete-btn-container { 
@@ -194,10 +272,17 @@
                               color: white !important; 
                               width: 100% !important; 
                               padding: 12px 20px !important; 
-                              border: none !important; 
-                              border-radius: 8px !important; 
-                              cursor: pointer !important; 
                               font-weight: 600 !important; 
+                              border-radius: 8px !important; 
+                              border: none !important; 
+                              transition: all 0.3s ease !important; 
+                              text-transform: uppercase !important; 
+                              letter-spacing: 0.5px !important; 
+                }
+
+                .delete-btn-container button:hover { 
+                              transform: translateY(-2px) !important; 
+                              box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3) !important; 
                 }
 
                 .notes-section { 
@@ -209,6 +294,7 @@
                 .notes-section h3 { 
                               color: #1a1a2e !important; 
                               margin-bottom: 15px !important; 
+                              font-size: 1em !important; 
                 }
 
                 .notes-history { 
@@ -227,6 +313,18 @@
                               margin-bottom: 12px !important; 
                               border-radius: 6px !important; 
                               border-left: 4px solid #667eea !important; 
+                              box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; 
+                              color: #333 !important; 
+                }
+
+                .note-entry:last-child { 
+                              margin-bottom: 0; 
+                }
+
+                .note-timestamp { 
+                              font-size: 0.8em !important; 
+                              color: #666 !important; 
+                              margin-bottom: 5px !important; 
                 }
 
                 .note-category { 
@@ -240,6 +338,73 @@
                               margin-left: 8px !important; 
                 }
 
+                .note-text { 
+                              color: #333 !important; 
+                              font-size: 0.9em !important; 
+                              line-height: 1.4 !important; 
+                              word-wrap: break-word !important; 
+                }
+
+                .empty-notes { 
+                              color: #999; 
+                              text-align: center; 
+                              padding: 20px; 
+                              font-style: italic; 
+                }
+
+                .reminder-section { 
+                              background-color: #fff3cd !important; 
+                              border: 1px solid #ffc107 !important; 
+                              border-radius: 6px !important; 
+                              padding: 15px !important; 
+                              margin-bottom: 20px !important; 
+                }
+
+                .reminder-section h4 { 
+                              color: #856404 !important; 
+                              margin-bottom: 10px !important; 
+                }
+
+                .reminder-info { 
+                              color: #856404 !important; 
+                              font-size: 0.9em !important; 
+                              margin-bottom: 10px !important; 
+                }
+
+                .reminder-actions { 
+                              display: flex !important; 
+                              gap: 10px !important; 
+                }
+
+                .reminder-actions button { 
+                              flex: 1 !important; 
+                              padding: 8px 12px !important; 
+                              border: none !important; 
+                              border-radius: 4px !important; 
+                              cursor: pointer !important; 
+                              font-weight: bold !important; 
+                              font-size: 0.85em !important; 
+                              transition: background 0.2s !important; 
+                }
+
+                .reminder-actions .mark-done { 
+                              background: #28a745 !important; 
+                              color: white !important; 
+                }
+
+                .reminder-actions .mark-done:hover { 
+                              background: #218838 !important; 
+                }
+
+                .reminder-actions .dismiss { 
+                              background: #6c757d !important; 
+                              color: white !important; 
+                }
+
+                .reminder-actions .dismiss:hover { 
+                              background: #5a6268 !important; 
+                }
+
                 .add-note-btn { 
                               background: linear-gradient(135deg, #51cf66 0%, #40c057 100%) !important; 
                               color: white !important; 
@@ -247,8 +412,15 @@
                               padding: 12px 20px !important; 
                               border-radius: 8px !important; 
                               font-weight: 600 !important; 
+                              text-transform: uppercase !important; 
+                              letter-spacing: 0.5px !important; 
                               width: 100% !important; 
-                              cursor: pointer !important; 
+                              transition: all 0.3s ease !important; 
+                }
+
+                .add-note-btn:hover { 
+                              transform: translateY(-2px) !important; 
+                              box-shadow: 0 10px 20px rgba(81, 207, 102, 0.3) !important; 
                 }
 
                 .note-form { 
@@ -256,6 +428,55 @@
                               padding: 15px !important; 
                               border-radius: 6px !important; 
                               border: 1px solid #ddd !important; 
+                }
+
+                .note-form label { 
+                              margin-top: 0 !important; 
+                              margin-bottom: 5px !important; 
+                              font-size: 0.9em !important; 
+                              color: #333 !important; 
+                }
+
+                .note-form input, 
+                .note-form select { 
+                              margin-bottom: 10px !important; 
+                              font-size: 0.9em !important; 
+                              padding: 10px !important; 
+                }
+
+                .note-form-buttons { 
+                              display: flex !important; 
+                              gap: 10px !important; 
+                              margin-top: 15px !important; 
+                }
+
+                .note-form-buttons button { 
+                              flex: 1 !important; 
+                              padding: 10px !important; 
+                              border: none !important; 
+                              border-radius: 6px !important; 
+                              cursor: pointer !important; 
+                              font-weight: bold !important; 
+                              font-size: 0.9em !important; 
+                              transition: background 0.2s !important; 
+                }
+
+                .note-form-buttons .add { 
+                              background: #51cf66 !important; 
+                              color: white !important; 
+                }
+
+                .note-form-buttons .add:hover { 
+                              background: #40c057 !important; 
+                }
+
+                .note-form-buttons .cancel-note { 
+                              background: #ddd !important; 
+                              color: #333 !important; 
+                }
+
+                .note-form-buttons .cancel-note:hover { 
+                              background: #bbb !important; 
                 }
             </style>
   </head>
@@ -283,6 +504,7 @@
       <div id="detailsModal" class="modal">
               <div class="modal-content">
                           <h2>Candidate Details</h2>
+                          <div id="reminderSection"></div>div>
                           <label>Candidate Name:</label>
                           <input type="text" id="detailName">
                           <label>Date:</label>
@@ -300,9 +522,9 @@
                                                                                         </select>select>
                                                                                       <label>Note:</label>
                                                                                       <textarea id="noteText" placeholder="Enter note..."></textarea>
-                                                                                      <div class="modal-buttons">
-                                                                                                                  <button onclick="toggleNoteForm()">Cancel</button>button>
-                                                                                                                  <button onclick="addNote()">Add</button>button>
+                                                                                      <div class="note-form-buttons">
+                                                                                                                  <button class="cancel-note" onclick="toggleNoteForm()">Cancel</button>button>
+                                                                                                                  <button class="add" onclick="addNote()">Add Note</button>button>
                                                                                         </div>div>
                                                               </div>div>
                                           </div>div>
@@ -339,6 +561,7 @@
                                                 column.className = 'column';
                                                 column.ondrop = (e) => drop(e, columnName);
                                                 column.ondragover = (e) => dragover(e);
+                                                column.ondragleave = (e) => dragleave(e);
 
                                                 const title = document.createElement('h2');
                                                 title.className = 'column-title';
@@ -346,7 +569,6 @@
 
                                                 const cardsDiv = document.createElement('div');
                                                 cardsDiv.className = 'cards';
-                                                cardsDiv.id = 'cards-' + columnName.replace(/\\s+/g, '-');
 
                                                 candidates[columnName].forEach(candidate => {
                                                                       const card = createCard(candidate, columnName);
@@ -369,9 +591,13 @@
                               const card = document.createElement('div');
                               card.className = 'card';
                               card.draggable = true;
-                    card.ondragstart = (e) => dragstart(e, candidate.id, columnName);
+                              card.ondragstart = (e) => dragstart(e, candidate.id, columnName);
                               card.onclick = () => openDetailsModal(candidate.id, columnName);
-                              card.innerHTML = candidate.name + '<div style="font-size:0.75em; opacity:0.9; margin-top:5px;">' + candidate.notes.length + ' note' + (candidate.notes.length !== 1 ? 's' : '') + '</div>';
+
+                              let html = '<div>' + candidate.name + '</div>';
+                              html += '<div class="card-subtitle">' + candidate.notes.length + ' note' + (candidate.notes.length !== 1 ? 's' : '') + '</div>';
+
+                              card.innerHTML = html;
                               return card;
                 }
 
@@ -384,6 +610,10 @@
                 function dragover(e) {
                               e.preventDefault();
                               e.dataTransfer.dropEffect = 'move';
+                }
+
+                function dragleave(e) {
+                              e.currentTarget.classList.remove('drag-over');
                 }
 
                 function drop(e, toColumn) {
@@ -415,9 +645,15 @@
                 function saveNewCandidate() {
                               const name = document.getElementById('candidateName').value;
                               const date = document.getElementById('candidateDate').value;
+
                               if (name.trim()) {
                                                 const id = Math.max(...candidates[currentColumn].map(c => c.id || 0), 0) + 1;
-                                                candidates[currentColumn].push({id: id, name: name, date: date, notes: []});
+                                                candidates[currentColumn].push({
+                                                                      id: id,
+                                                                      name: name,
+                                                                      date: date,
+                                                                      notes: []
+                                                });
                                                 initializeBoard();
                                                 closeAddModal();
                               }
@@ -427,19 +663,25 @@
                               currentColumn = columnName;
                               currentCandidateId = candidateId;
                               const candidate = candidates[columnName].find(c => c.id === candidateId);
+
                               if (candidate) {
                                                 document.getElementById('detailName').value = candidate.name;
                                                 document.getElementById('detailDate').value = candidate.date || '';
+
                                                 const notesList = document.getElementById('notesList');
                                                 notesList.innerHTML = '';
-                                                if (candidate.notes.length > 0) {
+
+                                                if (candidate.notes && candidate.notes.length > 0) {
                                                                       candidate.notes.forEach(note => {
                                                                                                 const noteDiv = document.createElement('div');
                                                                                                 noteDiv.className = 'note-entry';
-                                                                                                noteDiv.innerHTML = '<div style="font-size:0.8em; color:#666; margin-bottom:5px;">' + note.timestamp + '</div><span class="note-category">' + note.category + '</span><div style="color:#333; font-size:0.9em; margin-top:5px;">' + note.text + '</div>';
+                                                                                                noteDiv.innerHTML = '<div class="note-timestamp">' + note.timestamp + '</div><span class="note-category">' + note.category + '</span><div class="note-text">' + note.text + '</div>';
                                                                                                 notesList.appendChild(noteDiv);
                                                                       });
+                                                } else {
+                                                                      notesList.innerHTML = '<div class="empty-notes">No notes yet</div>';
                                                 }
+
                                                 document.getElementById('detailsModal').classList.add('show');
                                                 document.getElementById('noteForm').style.display = 'none';
                               }
@@ -460,7 +702,7 @@
                 }
 
                 function deleteCandidate() {
-                              if (confirm('Delete this candidate?')) {
+                              if (confirm('Are you sure you want to delete this candidate?')) {
                                                 const index = candidates[currentColumn].findIndex(c => c.id === currentCandidateId);
                                                 if (index !== -1) {
                                                                       candidates[currentColumn].splice(index, 1);
@@ -478,12 +720,19 @@
                 function addNote() {
                               const category = document.getElementById('noteCategory').value;
                               const text = document.getElementById('noteText').value;
+
                               if (text.trim()) {
                                                 const candidate = candidates[currentColumn].find(c => c.id === currentCandidateId);
                                                 if (candidate) {
                                                                       const now = new Date();
-                                                                      const timestamp = now.toLocaleString();
-                                                                      candidate.notes.push({timestamp: timestamp, category: category, text: text});
+                                                                      const timestamp = now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
+
+                                                                      candidate.notes.push({
+                                                                                                timestamp: timestamp,
+                                                                                                category: category,
+                                                                                                text: text
+                                                                        });
+
                                                                       openDetailsModal(currentCandidateId, currentColumn);
                                                                       document.getElementById('noteCategory').value = 'Info';
                                                                       document.getElementById('noteText').value = '';
