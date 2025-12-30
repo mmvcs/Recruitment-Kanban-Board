@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Recruitment Kanban Board</title>
+      <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+
+                body { 
+                              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                              padding: 20px; 
+                              min-height: 100vh; 
+                }
+
+                header { 
+                              text-align: center; 
+                              margin-bottom: 30px; 
+                              color: white; 
+                }
+
+                header h1 { 
+                              font-size: 2.5em; 
+                              text-shadow: 2px 2px 4px rgba(0,0,0,0.3); 
+                }
+
+                .kanban-container { 
+                              display: grid; 
+                              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+                              gap: 20px; 
+                              max-width: 1600px; 
+                              margin: 0 auto; 
+                }
+
+                .column { 
+                              background: white; 
+                              border-radius: 10px; 
+                              padding: 20px; 
+                              box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+                              display: flex; 
+                              flex-direction: column; 
+                              min-height: 600px; 
+                }
+
+                .column-title { 
+                              font-size: 1.1em; 
+                              font-weight: bold; 
+                              color: #333; 
+                              margin-bottom: 15px; 
+                              padding-bottom: 10px; 
+                              border-bottom: 3px solid #667eea; 
+                }
+
+                .cards { 
+                              flex: 1; 
+                              display: flex; 
+                              flex-direction: column; 
+                              gap: 10px; 
+                              min-height: 500px; 
+                }
+
+                .card { 
+                              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                              color: white; 
+                              padding: 15px; 
+                              border-radius: 8px; 
+                              cursor: pointer; 
+                              box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+                              transition: transform 0.2s, box-shadow 0.2s; 
+                              draggable: true; 
+                              font-weight: bold; 
+                }
+
+                .card:hover { 
+                              transform: translateY(-4px); 
+                              box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+                }
+
+                .add-card-btn { 
+                              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; 
+                              color: white !important; 
+                              border: none !important; 
+                              padding: 10px 15px !important; 
+                              border-radius: 6px !important; 
+                              cursor: pointer !important; 
+                              font-weight: bold !important; 
+                              margin-top: 15px !important; 
+                              width: 100% !important; 
+                }
+
+                .add-card-btn:hover { 
+                              background: #764ba2 !important; 
+                }
+
+                .modal { 
+                              display: none !important; 
+                              position: fixed !important; 
+                              z-index: 2000 !important; 
+                              left: 0 !important; 
+                              top: 0 !important; 
+                              width: 100% !important; 
+                              height: 100% !important; 
+                              background-color: rgba(0, 0, 0, 0.9) !important; 
+                              overflow-y: auto !important; 
+                }
+
+                .modal.show { 
+                              display: block !important; 
+                }
+
+                .modal-content { 
+                              background: #ffffff !important; 
+                              color: #000 !important; 
+                              margin: 5% auto !important; 
+                              padding: 40px !important; 
+                              border-radius: 16px !important; 
+                              width: 90% !important; 
+                              max-width: 550px !important; 
+                              box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important; 
+                }
+
+                .modal-content h2 { 
+                              color: #1a1a2e !important; 
+                              font-size: 1.8em !important; 
+                              margin-bottom: 30px !important; 
+                              padding-bottom: 20px !important; 
+                              border-bottom: 3px solid #667eea !important; 
+                }
+
+                .modal-content label { 
+                              color: #2d2d44 !important; 
+                              font-weight: 600 !important; 
+                              display: block !important; 
+                              margin-top: 15px !important; 
+                              margin-bottom: 8px !important; 
+                              text-transform: uppercase !important; 
+                }
+
+                .modal-content input,
+                .modal-content textarea,
+                .modal-content select { 
+                              width: 100% !important; 
+                              background-color: #f5f6ff !important; 
+                              border: 2px solid #e0e0f0 !important; 
+                              color: #333 !important; 
+                              padding: 12px 15px !important; 
+                              margin-bottom: 15px !important; 
+                              border-radius: 6px !important; 
+                }
+
+                .modal-content input:focus,
+                .modal-content textarea:focus,
+                .modal-content select:focus { 
+                              outline: none !important; 
+                              background-color: #ffffff !important; 
+                              border-color: #667eea !important; 
+                }
+
+                .modal-buttons { 
+                              display: flex !important; 
+                              gap: 10px !important; 
+                              margin-top: 25px !important; 
+                              justify-content: flex-end !important; 
+                }
+
+                .modal-buttons button { 
+                              padding: 12px 24px !important; 
+                              border: none !important; 
+                              border-radius: 8px !important; 
+                              cursor: pointer !important; 
+                              font-weight: 600 !important; 
+                              flex: 1 !important; 
+                }
+
+                .modal-buttons .save { 
+                              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; 
+                              color: white !important; 
+                }
+
+                .modal-buttons .cancel { 
+                              background: #e8e8f0 !important; 
+                              color: #2d2d44 !important; 
+                }
+
+                .delete-btn-container { 
+                              margin-top: 25px !important; 
+                              padding-top: 20px !important; 
+                              border-top: 2px solid #e0e0f0 !important; 
+                }
+
+                .delete-btn-container button { 
+                              background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%) !important; 
+                              color: white !important; 
+                              width: 100% !important; 
+                              padding: 12px 20px !important; 
+                              border: none !important; 
+                              border-radius: 8px !important; 
+                              cursor: pointer !important; 
+                              font-weight: 600 !important; 
+                }
+
+                .notes-section { 
+                              margin-top: 30px !important; 
+                              padding-top: 20px !important; 
+                              border-top: 2px solid #f0f0f0 !important; 
+                }
+
+                .notes-section h3 { 
+                              color: #1a1a2e !important; 
+                              margin-bottom: 15px !important; 
+                }
+
+                .notes-history { 
+                              max-height: 300px !important; 
+                              overflow-y: auto !important; 
+                              border: 1px solid #ddd !important; 
+                              border-radius: 6px !important; 
+                              padding: 15px !important; 
+                              background-color: #f9f9f9 !important; 
+                              margin-bottom: 15px !important; 
+                }
+
+                .note-entry { 
+                              background: white !important; 
+                              padding: 12px !important; 
+                              margin-bottom: 12px !important; 
+                              border-radius: 6px !important; 
+                              border-left: 4px solid #667eea !important; 
+                }
+
+                .note-category { 
+                              display: inline-block !important; 
+                              background: #667eea !important; 
+                              color: white !important; 
+                              padding: 3px 10px !important; 
+                              border-radius: 12px !important; 
+                              font-size: 0.75em !important; 
+                              font-weight: bold !important; 
+                              margin-left: 8px !important; 
+                }
+
+                .add-note-btn { 
+                              background: linear-gradient(135deg, #51cf66 0%, #40c057 100%) !important; 
+                              color: white !important; 
+                              border: none !important; 
+                              padding: 12px 20px !important; 
+                              border-radius: 8px !important; 
+                              font-weight: 600 !important; 
+                              width: 100% !important; 
+                              cursor: pointer !important; 
+                }
+
+                .note-form { 
+                              background-color: #f9f9f9 !important; 
+                              padding: 15px !important; 
+                              border-radius: 6px !important; 
+                              border: 1px solid #ddd !important; 
+                }
+            </style>
+  </head>
+  <body>
+        <header>
+                  <h1>Recruitment Kanban Board</h1>
+        </header>
+  
+      <div class="kanban-container" id="kanbanContainer"></div>div>
+  
+      <div id="addModal" class="modal">
+              <div class="modal-content">
+                          <h2>Add New Candidate</h2>
+                          <label>Candidate Name:</label>
+                          <input type="text" id="candidateName" placeholder="Enter candidate name">
+                          <label>Date:</label>
+                          <input type="date" id="candidateDate">
+                          <div class="modal-buttons">
+                                          <button class="cancel" onclick="closeAddModal()">Cancel</button>button>
+                                          <button class="save" onclick="saveNewCandidate()">Save</button>button>
+                          </div>div>
+              </div>div>
+      </div>div>
+  
+      <div id="detailsModal" class="modal">
+              <div class="modal-content">
+                          <h2>Candidate Details</h2>
+                          <label>Candidate Name:</label>
+                          <input type="text" id="detailName">
+                          <label>Date:</label>
+                          <input type="date" id="detailDate">
+                          <div class="notes-section">
+                                          <h3>Notes & Activity History</h3>
+                                          <div class="notes-history" id="notesList"></div>div>
+                                          <button class="add-note-btn" onclick="toggleNoteForm()">+ Add Note</button>button>
+                                          <div id="noteForm" style="display: none; margin-top: 15px;">
+                                                              <div class="note-form">
+                                                                                      <label>Category:</label>
+                                                                                      <select id="noteCategory">
+                                                                                                                  <option>Info</option>
+                                                                                                                  <option>Meeting Held</option>
+                                                                                        </select>select>
+                                                                                      <label>Note:</label>
+                                                                                      <textarea id="noteText" placeholder="Enter note..."></textarea>
+                                                                                      <div class="modal-buttons">
+                                                                                                                  <button onclick="toggleNoteForm()">Cancel</button>button>
+                                                                                                                  <button onclick="addNote()">Add</button>button>
+                                                                                        </div>div>
+                                                              </div>div>
+                                          </div>div>
+                          </div>div>
+                          <div class="modal-buttons">
+                                          <button class="cancel" onclick="closeDetailsModal()">Cancel</button>button>
+                                          <button class="save" onclick="saveDetails()">Save</button>button>
+                          </div>div>
+                          <div class="delete-btn-container">
+                                          <button onclick="deleteCandidate()">Delete Candidate</button>button>
+                          </div>div>
+              </div>div>
+      </div>div>
+  
+      <script>
+                const columnNames = ['Interested', 'Interview Scheduled', 'Waiting on Contract', 'Onboarding Started', 'Onboarding Completed'];
+                let candidates = {
+                              'Interested': [],
+                              'Interview Scheduled': [{id: 1, name: 'Jordan Lee', date: '2025-02-25', notes: [{timestamp: 'Dec 29, 2025, 07:22 PM', category: 'Meeting Held', text: 'Excellent candidate. Discussed benefits and start date. Ready to move forward.'}, {timestamp: 'Dec 29, 2025, 07:54 PM', category: 'Meeting Held', text: 'Testing for new meeting'}, {timestamp: 'Dec 29, 2025, 08:02 PM', category: 'Meeting Held', text: 'Had one-week checking'}]}],
+                              'Waiting on Contract': [],
+                              'Onboarding Started': [],
+                              'Onboarding Completed': []
+                };
+
+                let currentColumn = null;
+                let currentCandidateId = null;
+
+                function initializeBoard() {
+                              const container = document.getElementById('kanbanContainer');
+                              container.innerHTML = '';
+
+                              columnNames.forEach(columnName => {
+                                                const column = document.createElement('div');
+                                                column.className = 'column';
+                                                column.ondrop = (e) => drop(e, columnName);
+                                                column.ondragover = (e) => dragover(e);
+
+                                                const title = document.createElement('h2');
+                                                title.className = 'column-title';
+                                                title.textContent = columnName;
+
+                                                const cardsDiv = document.createElement('div');
+                                                cardsDiv.className = 'cards';
+                                                cardsDiv.id = 'cards-' + columnName.replace(/\\s+/g, '-');
+
+                                                candidates[columnName].forEach(candidate => {
+                                                                      const card = createCard(candidate, columnName);
+                                                                      cardsDiv.appendChild(card);
+                                                });
+
+                                                const addBtn = document.createElement('button');
+                                                addBtn.className = 'add-card-btn';
+                                                addBtn.textContent = '+ ADD CANDIDATE';
+                                                addBtn.onclick = () => openAddModal(columnName);
+
+                                                column.appendChild(title);
+                                                column.appendChild(cardsDiv);
+                                                column.appendChild(addBtn);
+                                                container.appendChild(column);
+                              });
+                }
+
+                function createCard(candidate, columnName) {
+                              const card = document.createElement('div');
+                              card.className = 'card';
+                              card.draggable = true;
+                    card.ondragstart = (e) => dragstart(e, candidate.id, columnName);
+                              card.onclick = () => openDetailsModal(candidate.id, columnName);
+                              card.innerHTML = candidate.name + '<div style="font-size:0.75em; opacity:0.9; margin-top:5px;">' + candidate.notes.length + ' note' + (candidate.notes.length !== 1 ? 's' : '') + '</div>';
+                              return card;
+                }
+
+                function dragstart(e, candidateId, fromColumn) {
+                              e.dataTransfer.effectAllowed = 'move';
+                              e.dataTransfer.setData('candidateId', candidateId);
+                              e.dataTransfer.setData('fromColumn', fromColumn);
+                }
+
+                function dragover(e) {
+                              e.preventDefault();
+                              e.dataTransfer.dropEffect = 'move';
+                }
+
+                function drop(e, toColumn) {
+                              e.preventDefault();
+                              const candidateId = parseInt(e.dataTransfer.getData('candidateId'));
+                              const fromColumn = e.dataTransfer.getData('fromColumn');
+
+                              if (fromColumn !== toColumn) {
+                                                const candidateIndex = candidates[fromColumn].findIndex(c => c.id === candidateId);
+                                                if (candidateIndex !== -1) {
+                                                                      const candidate = candidates[fromColumn].splice(candidateIndex, 1)[0];
+                                                                      candidates[toColumn].push(candidate);
+                                                                      initializeBoard();
+                                                }
+                              }
+                }
+
+                function openAddModal(columnName) {
+                              currentColumn = columnName;
+                              document.getElementById('addModal').classList.add('show');
+                }
+
+                function closeAddModal() {
+                              document.getElementById('addModal').classList.remove('show');
+                              document.getElementById('candidateName').value = '';
+                              document.getElementById('candidateDate').value = '';
+                }
+
+                function saveNewCandidate() {
+                              const name = document.getElementById('candidateName').value;
+                              const date = document.getElementById('candidateDate').value;
+                              if (name.trim()) {
+                                                const id = Math.max(...candidates[currentColumn].map(c => c.id || 0), 0) + 1;
+                                                candidates[currentColumn].push({id: id, name: name, date: date, notes: []});
+                                                initializeBoard();
+                                                closeAddModal();
+                              }
+                }
+
+                function openDetailsModal(candidateId, columnName) {
+                              currentColumn = columnName;
+                              currentCandidateId = candidateId;
+                              const candidate = candidates[columnName].find(c => c.id === candidateId);
+                              if (candidate) {
+                                                document.getElementById('detailName').value = candidate.name;
+                                                document.getElementById('detailDate').value = candidate.date || '';
+                                                const notesList = document.getElementById('notesList');
+                                                notesList.innerHTML = '';
+                                                if (candidate.notes.length > 0) {
+                                                                      candidate.notes.forEach(note => {
+                                                                                                const noteDiv = document.createElement('div');
+                                                                                                noteDiv.className = 'note-entry';
+                                                                                                noteDiv.innerHTML = '<div style="font-size:0.8em; color:#666; margin-bottom:5px;">' + note.timestamp + '</div><span class="note-category">' + note.category + '</span><div style="color:#333; font-size:0.9em; margin-top:5px;">' + note.text + '</div>';
+                                                                                                notesList.appendChild(noteDiv);
+                                                                      });
+                                                }
+                                                document.getElementById('detailsModal').classList.add('show');
+                                                document.getElementById('noteForm').style.display = 'none';
+                              }
+                }
+
+                function closeDetailsModal() {
+                              document.getElementById('detailsModal').classList.remove('show');
+                }
+
+                function saveDetails() {
+                              const candidate = candidates[currentColumn].find(c => c.id === currentCandidateId);
+                              if (candidate) {
+                                                candidate.name = document.getElementById('detailName').value;
+                                                candidate.date = document.getElementById('detailDate').value;
+                                                initializeBoard();
+                                                closeDetailsModal();
+                              }
+                }
+
+                function deleteCandidate() {
+                              if (confirm('Delete this candidate?')) {
+                                                const index = candidates[currentColumn].findIndex(c => c.id === currentCandidateId);
+                                                if (index !== -1) {
+                                                                      candidates[currentColumn].splice(index, 1);
+                                                                      initializeBoard();
+                                                                      closeDetailsModal();
+                                                }
+                              }
+                }
+
+                function toggleNoteForm() {
+                              const noteForm = document.getElementById('noteForm');
+                              noteForm.style.display = noteForm.style.display === 'none' ? 'block' : 'none';
+                }
+
+                function addNote() {
+                              const category = document.getElementById('noteCategory').value;
+                              const text = document.getElementById('noteText').value;
+                              if (text.trim()) {
+                                                const candidate = candidates[currentColumn].find(c => c.id === currentCandidateId);
+                                                if (candidate) {
+                                                                      const now = new Date();
+                                                                      const timestamp = now.toLocaleString();
+                                                                      candidate.notes.push({timestamp: timestamp, category: category, text: text});
+                                                                      openDetailsModal(currentCandidateId, currentColumn);
+                                                                      document.getElementById('noteCategory').value = 'Info';
+                                                                      document.getElementById('noteText').value = '';
+                                                }
+                              }
+                }
+
+                window.onload = initializeBoard;
+      </script>
+  </body>
+</html>html>
+      </script></option></option></label></label></h2></h1>
+        </header>
+  </body>
+      </style></title>
+  </head>
