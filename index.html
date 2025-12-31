@@ -93,7 +93,6 @@
                 .card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
                 .card-title { font-weight: bold; margin-bottom: 3px; }
-
                 .card-info { font-size: 0.85em; opacity: 0.9; }
 
                 .card-recent-note {
@@ -135,7 +134,6 @@
                 .modal.show { display: block !important; }
 
                 .modal-content { background: #ffffff !important; margin: 5% auto !important; padding: 20px !important; width: 90% !important; max-width: 600px !important; border-radius: 10px !important; }
-
                 .modal-content button { background: linear-gradient(135deg, #A0826D 0%, #8B7355 100%) !important; color: white !important; border: none !important; padding: 10px 20px !important; margin: 5px !important; border-radius: 5px !important; cursor: pointer !important; }
                 .modal-content button:hover { background: linear-gradient(135deg, #8B7355 0%, #6F5D4C 100%) !important; }
 
@@ -153,7 +151,7 @@
                             <img src="https://raw.githubusercontent.com/mmvcs/Recruitment-Kanban-Board/main/logo.png" alt="MMV Logo">
                 </div>div>
         </header>
-  
+      
       <div class="kanban-container">
               <div class="column" data-column="Interested">
                           <div class="column-title">Interested</div>div>
@@ -181,7 +179,7 @@
                           <button class="add-card-btn">+ ADD CANDIDATE</button>button>
               </div>div>
       </div>div>
-  
+      
       <div id="addModal" class="modal">
               <div class="modal-content">
                           <span class="close">×</span>span>
@@ -198,7 +196,7 @@
                           <button onclick="addCandidate()">Add Candidate</button>button>
               </div>div>
       </div>div>
-  
+      
       <div id="detailsModal" class="modal">
               <div class="modal-content">
                           <span class="close">×</span>span>
@@ -215,7 +213,7 @@
                           <button onclick="closeDetailsModal()">Close</button>button>
               </div>div>
       </div>div>
-  
+      
       <script>
                 let candidates = {
                               "Interested": [],
@@ -241,7 +239,7 @@
                                                                                                 return today >= r.reminderDate && !r.completed;
                                                                       });
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             const reminderBadge = reminders.length > 0 ? '<div class="card-reminder">🔔 ' + reminders.length + ' Reminder' + (reminders.length > 1 ? 's' : '') + '</div>' : '';
+                                                                      const reminderBadge = reminders.length > 0 ? '<div class="card-reminder">🔔 ' + reminders.length + ' Reminder' + (reminders.length > 1 ? 's' : '') + '</div>' : '';
 
                                                                       let recentNote = '';
                                                                       if (candidate.notes.length > 0) {
@@ -252,7 +250,12 @@
                                                                       card.innerHTML = '<div class="card-title">' + candidate.name + '</div><div class="card-info">' + candidate.notes.length + ' notes' + reminderBadge + '</div>' + recentNote;
 
                                                                       card.addEventListener('click', () => openModal(candidate.id, column));
-                                                                                          card.addEventListener('dragstart', (e) => { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('id', candidate.id); e.dataTransfer.setData('from', column); card.style.opacity = '0.5'; });
+                                                                      card.addEventListener('dragstart', (e) => {
+                                                                                                e.dataTransfer.effectAllowed = 'move';
+                                                                                                e.dataTransfer.setData('id', candidate.id);
+                                                                                                e.dataTransfer.setData('from', column);
+                                                                                                card.style.opacity = '0.5';
+                                                                      });
                                                                       card.addEventListener('dragend', () => card.style.opacity = '1');
 
                                                                       cardContainer.appendChild(card);
@@ -261,10 +264,14 @@
 
                               Object.keys(candidates).forEach(column => {
                                                 const container = document.getElementById(column);
-                                                container.addEventListener('dragover', (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; container.style.backgroundColor = 'rgba(160, 130, 109, 0.2)'; });
+                                                container.addEventListener('dragover', (e) => {
+                                                                      e.preventDefault();
+                                                                      e.dataTransfer.dropEffect = 'move';
+                                                                      container.style.backgroundColor = 'rgba(160, 130, 109, 0.2)';
+                                                });
                                                 container.addEventListener('dragleave', () => container.style.backgroundColor = 'transparent');
                                                 container.addEventListener('drop', (e) => {
-                            e.preventDefault();
+                                                                      e.preventDefault();
                                                                       container.style.backgroundColor = 'transparent';
                                                                       const id = parseInt(e.dataTransfer.getData('id'));
                                                                       const from = e.dataTransfer.getData('from');
