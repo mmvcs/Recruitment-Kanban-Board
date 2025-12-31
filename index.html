@@ -212,6 +212,7 @@
                           <button onclick="addNote()">Add Note</button>
                           <div id="notesContainer" style="margin-top: 20px;"></div>
                             <div id="remindersContainer" style="margin-top: 20px;"></div>
+                            <button onclick="deleteCard()" style="background-color: #d32f2f; margin-left: 10px;">Delete Card</button>button>
                           <button onclick="closeDetailsModal()">Close</button>
               </div>
       </div>
@@ -411,6 +412,32 @@
                 function closeDetailsModal() {
                               document.getElementById('detailsModal').classList.remove('show');
                 }
+
+            function deleteCard() {
+                      // Get the currently displayed candidate ID from the modal title
+                      const modalTitle = document.getElementById('modalTitle').textContent;
+                      const currentColumn = window.currentColumn;
+                      const currentId = window.currentCandidate?.id;
+
+                      if (!currentId || !currentColumn) {
+                                    alert('Error: Could not identify card to delete');
+                                    return;
+                      }
+
+                      // Confirm deletion
+                      if (!confirm(`Are you sure you want to delete this card?`)) {
+                                    return;
+                      }
+
+                      // Remove the candidate from the array
+                      candidates[currentColumn] = candidates[currentColumn].filter(c => c.id !== currentId);
+
+                      // Close the modal
+                      closeDetailsModal();
+
+                      // Refresh the board
+                      initBoard();
+            }
 
                 initBoard();
       </script>
