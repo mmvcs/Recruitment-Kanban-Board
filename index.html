@@ -197,7 +197,8 @@
               </div>
       </div>
       
-      <div id="detailsModal" class="modal">
+      <div id="252
+        " class="modal">
               <div class="modal-content">
                           <span class="close">×</span>
                           <h2 id="modalTitle"></h2>
@@ -210,6 +211,7 @@
                           </select>
                           <button onclick="addNote()">Add Note</button>
                           <div id="notesContainer" style="margin-top: 20px;"></div>
+                            <div id="remindersContainer" style="margin-top: 20px;"></div>
                           <button onclick="closeDetailsModal()">Close</button>
               </div>
       </div>
@@ -295,6 +297,7 @@
                               window.currentColumn = column;
                               document.getElementById('modalTitle').textContent = candidate.name;
                               displayNotes(candidate);
+                              displayReminders(candidate);
                               document.getElementById('detailsModal').classList.add('show');
                 }
 
@@ -312,6 +315,37 @@
                                                 container.appendChild(div);
                               });
                 }
+
+         function displayReminders(candidate) {
+            const container = document.getElementById('remindersContainer');
+            container.innerHTML = '';
+            const reminders = candidate.reminders.filter(r => {
+               const today = new Date().toISOString().split('T')[0];
+               return today >= r.reminderDate && !r.completed;
+            });
+            if (reminders.length > 0) {
+               container.innerHTML = '<h3>Active Reminders</h3>';
+               reminders.forEach(reminder => {
+                  const div = document.createElement('div');
+                  div.style.background = '#FFF3E0';
+                  div.style.padding = '10px';
+                  div.style.marginBottom = '10px';
+                  div.style.borderRadius = '5px';
+                  div.style.borderLeft = '4px solid #D65A3F';
+                  div.innerHTML = '<strong>Due: ' + reminder.dueDate + '</strong><br><button onclick="removeReminderFromModal(' + candidate.id + ', \'' + window.currentColumn + '\')" style="background:#D65A3F;color:white;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;margin-top:10px;">Remove Reminder</button>';
+                  container.appendChild(div);
+               });
+            }
+         }
+
+         function removeReminderFromModal(candidateId, column) {
+            const candidate = candidates[column].find(c => c.id === candidateId);
+            if (candidate) {
+               candidate.reminders = [];
+               displayReminders(candidate);
+               initBoard();
+            }
+         }
 
                 function addNote() {
                               const text = document.getElementById('noteText').value;
