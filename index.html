@@ -239,7 +239,7 @@
                                                                                                 return today >= r.reminderDate && !r.completed;
                                                                       });
 
-                                                                      const reminderBadge = reminders.length > 0 ? '<div class="card-reminder">🔔 ' + reminders.length + ' Reminder' + (reminders.length > 1 ? 's' : '') + '</div>' : '';
+                                                                      const reminderBadge = reminders.length > 0 ? '<div class="card-reminder">🔔 ' + reminders.length + ' Reminder' + (reminders.length > 1 ? 's <button onclick="removeReminder(' + candidate.id + ', \'' + column + '\')" style="background:none;border:none;color:white;cursor:pointer;font-size:1.2em;padding:0;margin-left:4px;">×</button>' : '') + '</div>' : '';
 
                                                                       let recentNote = '';
                                                                       if (candidate.notes.length > 0) {
@@ -315,7 +315,15 @@
 
                 function addNote() {
                               const text = document.getElementById('noteText').value;
-                              const category = document.getElementById('noteCategory').value;
+                 
+                  
+                   function removeReminder(candidateId, column) {
+                      const candidate = candidates[column].find(c => c.id === candidateId);
+                      if (candidate && candidate.reminders.length > 0) {
+                         candidate.reminders = [];
+                         initBoard();
+                      }
+                   }const category = document.getElementById('noteCategory').value;
                               if (!text.trim()) return;
 
                               const now = new Date();
