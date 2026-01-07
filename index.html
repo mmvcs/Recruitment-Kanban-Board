@@ -7,15 +7,16 @@
       <!-- FIREBASE SDK - Using Compat Version -->
       <script src="https://www.gstatic.com/firebaseapp/9.23.0/firebase-app-compat.js"></script>
       <script src="https://www.gstatic.com/firebaseapp/9.23.0/firebase-firestore-compat.js"></script>
-      
       <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
-                body { 
+
+                body {
                               background: linear-gradient(135deg, #A0826D 0%, #8B7355 50%, #2C3E50 100%);
                               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                               padding: 5px;
                               min-height: 100vh;
                 }
+
                 header {
                               text-align: center;
                               margin-bottom: 5px;
@@ -24,12 +25,14 @@
                               align-items: center;
                               padding: 10px;
                 }
+
                 header h1 {
                               font-size: 1.4em;
                               color: white;
                               text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
                               flex: 1;
                 }
+
                 .logo-container {
                               width: 60px;
                               height: 60px;
@@ -41,7 +44,9 @@
                               align-items: center;
                               justify-content: center;
                 }
+
                 .logo-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
                 .kanban-container {
                               display: flex;
                               flex-wrap: nowrap;
@@ -51,6 +56,7 @@
                               height: calc(100vh - 85px);
                               overflow: hidden;
                 }
+
                 .column {
                               flex: 1 1 0;
                               background: white;
@@ -62,6 +68,7 @@
                               min-width: 0;
                               overflow: auto;
                 }
+
                 .column-title {
                               font-size: 0.8em;
                               font-weight: bold;
@@ -70,7 +77,9 @@
                               padding-bottom: 4px;
                               border-bottom: 2px solid #A0826D;
                 }
+
                 .cards { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
                 .card {
                               background: linear-gradient(135deg, #A0826D 0%, #8B7355 100%);
                               color: white;
@@ -83,9 +92,12 @@
                               flex-shrink: 0;
                               transition: all 0.2s;
                 }
+
                 .card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+
                 .card-title { font-weight: bold; margin-bottom: 3px; }
                 .card-info { font-size: 0.85em; opacity: 0.9; }
+
                 .card-recent-note {
                               font-size: 0.7em;
                               margin-top: 6px;
@@ -93,6 +105,7 @@
                               border-top: 1px solid rgba(255, 255, 255, 0.3);
                               line-height: 1.3;
                 }
+
                 .card-reminder {
                               background: linear-gradient(135deg, #E8714F 0%, #D65A3F 100%);
                               padding: 4px 8px;
@@ -102,7 +115,9 @@
                               text-align: center;
                               animation: pulse 1.5s ease-in-out infinite;
                 }
+
                 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
                 .add-card-btn {
                               background: linear-gradient(135deg, #A0826D 0%, #8B7355 100%) !important;
                               color: white !important;
@@ -115,14 +130,19 @@
                               width: 100%;
                               font-size: 0.8em !important;
                 }
+
                 .add-card-btn:hover { background: linear-gradient(135deg, #8B7355 0%, #6F5D4C 100%) !important; }
+
                 .modal { display: none !important; position: fixed !important; z-index: 2000 !important; left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; background-color: rgba(0, 0, 0, 0.9) !important; overflow-y: auto !important; }
                 .modal.show { display: block !important; }
+
                 .modal-content { background: #ffffff !important; margin: 5% auto !important; padding: 20px !important; width: 90% !important; max-width: 600px !important; border-radius: 10px !important; }
                 .modal-content button { background: linear-gradient(135deg, #A0826D 0%, #8B7355 100%) !important; color: white !important; border: none !important; padding: 10px 20px !important; margin: 5px !important; border-radius: 5px !important; cursor: pointer !important; }
                 .modal-content button:hover { background: linear-gradient(135deg, #8B7355 0%, #6F5D4C 100%) !important; }
+
                 input, textarea, select { width: 100% !important; padding: 10px !important; margin: 10px 0 !important; border: 2px solid #A0826D !important; border-radius: 5px !important; }
                 input:focus, textarea:focus, select:focus { outline: none !important; border-color: #2C3E50 !important; box-shadow: 0 0 5px #A0826D !important; }
+
                 label { font-weight: bold !important; color: #2C3E50 !important; }
                 .close { cursor: pointer; font-size: 28px; font-weight: bold; }
             </style>
@@ -134,6 +154,7 @@
                             <img src="https://raw.githubusercontent.com/mmvcs/Recruitment-Kanban-Board/main/logo.png" alt="MMV Logo">
                 </div>div>
         </header>
+      
       <div class="kanban-container">
               <div class="column" data-column="Interested">
                           <div class="column-title">Interested</div>div>
@@ -161,6 +182,7 @@
                           <button class="add-card-btn">+ ADD CANDIDATE</button>button>
               </div>div>
       </div>div>
+      
       <div id="addModal" class="modal">
               <div class="modal-content">
                           <span class="close">×</span>span>
@@ -177,6 +199,7 @@
                           <button onclick="addCandidate()">Add Candidate</button>button>
               </div>div>
       </div>div>
+      
       <div id="detailsModal" class="modal">
               <div class="modal-content">
                           <span class="close">×</span>span>
@@ -197,7 +220,6 @@
       </div>div>
       
       <script>
-                // INITIALIZE FIREBASE
                 const firebaseConfig = {
                               apiKey: "AIzaSyAdjMtD_yGN39yyIB8OotP_0Yjs7Z2vc_I",
                               authDomain: "recruitment-kanban.firebaseapp.com",
@@ -213,25 +235,23 @@
                 let candidates = {};
                 let isInitialized = false;
 
-                // LOAD DATA FROM FIRESTORE
                 db.collection('candidates').doc('board').onSnapshot((doc) => {
                               if (doc.exists) {
                                                 candidates = doc.data();
                               } else {
-                        candidates = {
-                                              "Interested": [],
-                                              "Interview Scheduled": [],
-                                              "Waiting on Contract": [],
-                                              "Onboarding Started": [],
-                                              "Onboarding Completed": []
-                        };
+                                                candidates = {
+                                                                      "Interested": [],
+                                                                      "Interview Scheduled": [],
+                                                                      "Waiting on Contract": [],
+                                                                      "Onboarding Started": [],
+                                                                      "Onboarding Completed": []
+                                                };
                               }
                               if (isInitialized) {
                                                 initBoard();
                               }
                 });
 
-                // SAVE TO FIRESTORE
                 function saveCandidates() {
                               db.collection('candidates').doc('board').set(candidates);
                 }
@@ -240,40 +260,42 @@
                               Object.keys(candidates).forEach(column => {
                                                 const cardContainer = document.getElementById(column);
                                                 cardContainer.innerHTML = '';
-                                                candidates[column].forEach(candidate => {
-                                                                      const card = document.createElement('div');
-                                                                      card.className = 'card';
-                                                                      card.draggable = true;
-                                                                      card.dataset.candidateId = candidate.id;
-                                                                      card.dataset.column = column;
+                        candidates[column].forEach(candidate => {
+                                              const card = document.createElement('div');
+                                              card.className = 'card';
+                                              card.draggable = true;
+                                              card.dataset.candidateId = candidate.id;
+                                              card.dataset.column = column;
 
-                                                                      const reminders = candidate.reminders.filter(r => {
-                                                                                                const today = new Date().toISOString().split('T')[0];
-                                                                                                return today >= r.reminderDate && !r.completed;
-                                                                      });
+                                              const reminders = candidate.reminders.filter(r => {
+                                                                        const today = new Date().toISOString().split('T')[0];
+                                                                        return today >= r.reminderDate && !r.completed;
+                                              });
 
-                                                                      let reminderBadge = '';
-                                                                      if (reminders.length > 0) {
-                                                                                                reminderBadge = '<div class="card-reminder">🔔 ' + reminders.length + ' Reminder' + (reminders.length > 1 ? 's' : '') + '</div>';
-                                                                      }
+                                              let reminderBadge = '';
+                                              if (reminders.length > 0) {
+                                                                        reminderBadge = '<div class="card-reminder">🔔 ' + reminders.length + ' Reminder' + (reminders.length > 1 ? 's' : '') + '</div>';
+                                              }
 
-                                                                      let recentNote = '';
-                                                                      if (candidate.notes.length > 0) {
-                                                                                                const latest = candidate.notes[candidate.notes.length - 1];
-                                                                                                recentNote = '<div class="card-recent-note"><strong>' + latest.category + ':</strong> ' + latest.text + '</div>';
-                                                                      }
+                                              let recentNote = '';
+                                              if (candidate.notes.length > 0) {
+                                                                        const latest = candidate.notes[candidate.notes.length - 1];
+                                                                        recentNote = '<div class="card-recent-note"><strong>' + latest.category + ':</strong> ' + latest.text + '</div>';
+                                              }
 
-                                                                      card.innerHTML = '<div class="card-title">' + candidate.name + '</div><div class="card-info">' + candidate.notes.length + ' notes' + reminderBadge + '</div>' + recentNote;
-                                                                      card.addEventListener('click', () => openModal(candidate.id, column));
-                                                                      card.addEventListener('dragstart', (e) => {
-                                                                                                e.dataTransfer.effectAllowed = 'move';
-                                                                                                e.dataTransfer.setData('id', candidate.id);
-                                                                                                e.dataTransfer.setData('from', column);
-                                                                                                card.style.opacity = '0.5';
-                                                                      });
-                                                                      card.addEventListener('dragend', () => card.style.opacity = '1');
-                                                                      cardContainer.appendChild(card);
-                  });
+                                              card.innerHTML = '<div class="card-title">' + candidate.name + '</div><div class="card-info">' + candidate.notes.length + ' notes' + reminderBadge + '</div>' + recentNote;
+
+                                              card.addEventListener('click', () => openModal(candidate.id, column));
+                                              card.addEventListener('dragstart', (e) => {
+                                                                        e.dataTransfer.effectAllowed = 'move';
+                                                                        e.dataTransfer.setData('id', candidate.id);
+                                                                        e.dataTransfer.setData('from', column);
+                                                                        card.style.opacity = '0.5';
+                                              });
+                                              card.addEventListener('dragend', () => card.style.opacity = '1');
+
+                                              cardContainer.appendChild(card);
+                        });
                               });
 
                               Object.keys(candidates).forEach(column => {
@@ -312,22 +334,22 @@
                               displayNotes(candidate);
                               displayReminders(candidate);
                               document.getElementById('detailsModal').classList.add('show');
-        }
+                }
 
-                                                                                                                                                                                            function displayNotes(candidate) {
-                                                                                                                                                                                                          const container = document.getElementById('notesContainer');
-                                                                                                                                                                                                          container.innerHTML = '<h3>Notes</h3>';
-                                                                                                                                                                                                          candidate.notes.forEach(note => {
-                                                                                                                                                                                                                            const div = document.createElement('div');
-                                                                                                                                                                                                                            div.style.background = '#F5F5F5';
-                                                                                                                                                                                                                            div.style.padding = '10px';
-                                                                                                                                                                                                                            div.style.marginBottom = '10px';
-                                                                                                                                                                                                                            div.style.borderRadius = '5px';
-                                                                                                                                                                                                                            div.style.borderLeft = '4px solid #A0826D';
-                                                                                                                                                                                                                            div.innerHTML = '<strong>' + note.timestamp + '</strong> [' + note.category + ']<br>' + note.text;
-                                                                                                                                                                                                                            container.appendChild(div);
-                                                                                                                                                                                                                        });
-                                                                                                                                                                                              }
+                function displayNotes(candidate) {
+                              const container = document.getElementById('notesContainer');
+                              container.innerHTML = '<h3>Notes</h3>';
+                              candidate.notes.forEach(note => {
+                                                const div = document.createElement('div');
+                                                div.style.background = '#F5F5F5';
+                                                div.style.padding = '10px';
+                                                                  div.style.marginBottom = '10px';
+                                                div.style.borderRadius = '5px';
+                                                div.style.borderLeft = '4px solid #A0826D';
+                                                div.innerHTML = '<strong>' + note.timestamp + '</strong> [' + note.category + ']<br>' + note.text;
+                                                container.appendChild(div);
+                              });
+                }
 
                 function displayReminders(candidate) {
                               const container = document.getElementById('remindersContainer');
@@ -337,14 +359,14 @@
                                                 return today >= r.reminderDate && !r.completed;
                               });
                               if (reminders.length > 0) {
-                                                                                                                  container.innerHTML = '<h3>Active Reminders</h3>';
+                                                container.innerHTML = '<h3>Active Reminders</h3>';
                                                 reminders.forEach(reminder => {
                                                                       const div = document.createElement('div');
                                                                       div.style.background = '#FFF3E0';
                                                                       div.style.padding = '10px';
                                                                       div.style.marginBottom = '10px';
                                                                       div.style.borderRadius = '5px';
-                                                                      div.style.borderLeft = '4px solid #D65A3F';
+                            div.style.borderLeft = '4px solid #D65A3F';
                                                                       div.innerHTML = '<strong>Due: ' + reminder.dueDate + '</strong><br><button onclick="removeReminderFromModal(' + candidate.id + ', \'' + window.currentColumn + '\')" style="background:#D65A3F;color:white;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;margin-top:10px;">Remove Reminder</button>';
                                                                       container.appendChild(div);
                                                 });
@@ -418,11 +440,10 @@
 
                               const newId = Math.max(...Object.values(candidates).flatMap(arr => arr.map(c => c.id)), 0) + 1;
                               candidates[column].push({ id: newId, name, column, notes: [], reminders: [] });
-
                               saveCandidates();
                               document.getElementById('candidateName').value = '';
                               document.getElementById('candidateColumn').value = '';
-                              document.getElementById('addModal').classList.remove('show');
+                    document.getElementById('addModal').classList.remove('show');
                               initBoard();
                 }
 
@@ -442,17 +463,15 @@
                               if (!confirm('Are you sure you want to delete this card?')) return;
 
                               candidates[currentColumn] = candidates[currentColumn].filter(c => c.id !== currentId);
-
                               saveCandidates();
                               closeDetailsModal();
                               initBoard();
                 }
 
-                // INITIALIZE ON LOAD
                 db.collection('candidates').doc('board').get().then(() => {
                               isInitialized = true;
                               initBoard();
-                });
+        });
       </script>
   </body>
 </html>html>
