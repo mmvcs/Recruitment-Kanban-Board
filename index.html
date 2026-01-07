@@ -4,9 +4,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>MMV Travel Group Onboarding</title>
-      <!-- FIREBASE SDK -->
-      <script src="https://www.gstatic.com/firebaseapp/10.7.0/firebase-app.js"></script>
-      <script src="https://www.gstatic.com/firebaseapp/10.7.0/firebase-firestore.js"></script>
+      <!-- FIREBASE SDK - Using Compat Version -->
+      <script src="https://www.gstatic.com/firebaseapp/9.23.0/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebaseapp/9.23.0/firebase-firestore-compat.js"></script>
       
       <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -204,8 +204,7 @@
                               projectId: "recruitment-kanban",
                               storageBucket: "recruitment-kanban.firebasestorage.app",
                               messagingSenderId: "330266005754",
-                              appId: "1:330266005754:web:396d33f3e5f0cc80c7f943",
-                              measurementId: "G-SFFLD Y9TNH"
+                              appId: "1:330266005754:web:396d33f3e5f0cc80c7f943"
                 };
 
                 firebase.initializeApp(firebaseConfig);
@@ -219,17 +218,17 @@
                               if (doc.exists) {
                                                 candidates = doc.data();
                               } else {
-                                                candidates = {
-                                                                      "Interested": [],
-                                                                      "Interview Scheduled": [],
-                                                                      "Waiting on Contract": [],
-                                                                      "Onboarding Started": [],
-                                                                      "Onboarding Completed": []
-                                                };
-        }
-                    if (isInitialized) {
-                                      initBoard();
-                    }
+                        candidates = {
+                                              "Interested": [],
+                                              "Interview Scheduled": [],
+                                              "Waiting on Contract": [],
+                                              "Onboarding Started": [],
+                                              "Onboarding Completed": []
+                        };
+                              }
+                              if (isInitialized) {
+                                                initBoard();
+                              }
                 });
 
                 // SAVE TO FIRESTORE
@@ -253,7 +252,10 @@
                                                                                                 return today >= r.reminderDate && !r.completed;
                                                                       });
 
-                                                                      const reminderBadge = reminders.length > 0 ? '<div class="card-reminder">🔔 ' + reminders.length + ' Reminder' + (reminders.length > 1 ? 's <button onclick="removeReminder(' + candidate.id + ', \'' + column + '\')" style="background:none;border:none;color:white;cursor:pointer;font-size:1.2em;padding:0;margin-left:4px;">×</button>' : '') + '</div>' : '';
+                                                                      let reminderBadge = '';
+                                                                      if (reminders.length > 0) {
+                                                                                                reminderBadge = '<div class="card-reminder">🔔 ' + reminders.length + ' Reminder' + (reminders.length > 1 ? 's' : '') + '</div>';
+                                                                      }
 
                                                                       let recentNote = '';
                                                                       if (candidate.notes.length > 0) {
@@ -271,7 +273,7 @@
                                                                       });
                                                                       card.addEventListener('dragend', () => card.style.opacity = '1');
                                                                       cardContainer.appendChild(card);
-                                                });
+                  });
                               });
 
                               Object.keys(candidates).forEach(column => {
@@ -310,22 +312,22 @@
                               displayNotes(candidate);
                               displayReminders(candidate);
                               document.getElementById('detailsModal').classList.add('show');
-                }
+        }
 
-                function displayNotes(candidate) {
-                              const container = document.getElementById('notesContainer');
-                              container.innerHTML = '<h3>Notes</h3>';
-                              candidate.notes.forEach(note => {
-                                                const div = document.createElement('div');
-                                                div.style.background = '#F5F5F5';
-                                                                                        div.style.padding = '10px';
-                                                div.style.marginBottom = '10px';
-                                                div.style.borderRadius = '5px';
-                                                div.style.borderLeft = '4px solid #A0826D';
-                                                div.innerHTML = '<strong>' + note.timestamp + '</strong> [' + note.category + ']<br>' + note.text;
-                                                container.appendChild(div);
-                              });
-                }
+                                                                                                                                                                                            function displayNotes(candidate) {
+                                                                                                                                                                                                          const container = document.getElementById('notesContainer');
+                                                                                                                                                                                                          container.innerHTML = '<h3>Notes</h3>';
+                                                                                                                                                                                                          candidate.notes.forEach(note => {
+                                                                                                                                                                                                                            const div = document.createElement('div');
+                                                                                                                                                                                                                            div.style.background = '#F5F5F5';
+                                                                                                                                                                                                                            div.style.padding = '10px';
+                                                                                                                                                                                                                            div.style.marginBottom = '10px';
+                                                                                                                                                                                                                            div.style.borderRadius = '5px';
+                                                                                                                                                                                                                            div.style.borderLeft = '4px solid #A0826D';
+                                                                                                                                                                                                                            div.innerHTML = '<strong>' + note.timestamp + '</strong> [' + note.category + ']<br>' + note.text;
+                                                                                                                                                                                                                            container.appendChild(div);
+                                                                                                                                                                                                                        });
+                                                                                                                                                                                              }
 
                 function displayReminders(candidate) {
                               const container = document.getElementById('remindersContainer');
@@ -335,7 +337,7 @@
                                                 return today >= r.reminderDate && !r.completed;
                               });
                               if (reminders.length > 0) {
-                                                container.innerHTML = '<h3>Active Reminders</h3>';
+                                                                                                                  container.innerHTML = '<h3>Active Reminders</h3>';
                                                 reminders.forEach(reminder => {
                                                                       const div = document.createElement('div');
                                                                       div.style.background = '#FFF3E0';
@@ -352,7 +354,7 @@
                 function removeReminderFromModal(candidateId, column) {
                               const candidate = candidates[column].find(c => c.id === candidateId);
                               if (candidate) {
-                                                                                                                                                candidate.reminders = [];
+                                                candidate.reminders = [];
                                                 saveCandidates();
                                                 displayReminders(candidate);
                                                 initBoard();
@@ -374,9 +376,9 @@
                               if (!text.trim()) return;
 
                               const now = new Date();
-                                            const timestamp = now.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                              const timestamp = now.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
-                                                                                                              window.currentCandidate.notes.push({ timestamp, category, text });
+                              window.currentCandidate.notes.push({ timestamp, category, text });
 
                               if (category === 'Meeting Held') {
                                                 const today = new Date().toISOString().split('T')[0];
