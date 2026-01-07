@@ -14,6 +14,8 @@
           header h1 { font-size: 1.4em; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); flex: 1; }
           .logo-container { width: 60px; height: 60px; background: white; border-radius: 10px; padding: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
           .logo-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+          .import-btn { background: #4CAF50 !important; color: white !important; border: none !important; padding: 8px 12px !important; border-radius: 6px !important; cursor: pointer !important; font-weight: bold !important; font-size: 0.75em !important; margin: 0 5px !important; white-space: nowrap; }
+          .import-btn:hover { background: #45a049 !important; }
           .kanban-container { display: flex; flex-wrap: nowrap; gap: 5px; width: 100%; padding: 5px; height: calc(100vh - 85px); overflow: hidden; }
           .column { flex: 1 1 0; background: white; border-radius: 8px; padding: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; min-width: 0; overflow: auto; }
           .column-title { font-size: 0.8em; font-weight: bold; color: #2C3E50; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 2px solid #A0826D; }
@@ -41,78 +43,79 @@
   <body>
       <header>
             <h1>MMV Travel Group Onboarding</h1>
+          <button class="import-btn" id="importBtn" onclick="importLocalStorage()">📥 Import Stored Data</button>button>
           <div class="logo-container">
                 <img src="https://raw.githubusercontent.com/mmvcs/Recruitment-Kanban-Board/main/logo.png" alt="MMV Logo">
-          </div>
+          </div>div>
       </header>
     
     <div class="kanban-container">
         <div class="column" data-column="Interested">
-              <div class="column-title">Interested</div>
-              <div class="cards" id="Interested"></div>
-              <button class="add-card-btn">+ ADD CANDIDATE</button>
-        </div>
+              <div class="column-title">Interested</div>div>
+              <div class="cards" id="Interested"></div>div>
+              <button class="add-card-btn">+ ADD CANDIDATE</button>button>
+        </div>div>
         
         <div class="column" data-column="Interview Scheduled">
-              <div class="column-title">Interview Scheduled</div>
-              <div class="cards" id="Interview Scheduled"></div>
-              <button class="add-card-btn">+ ADD CANDIDATE</button>
-        </div>
+              <div class="column-title">Interview Scheduled</div>div>
+              <div class="cards" id="Interview Scheduled"></div>div>
+              <button class="add-card-btn">+ ADD CANDIDATE</button>button>
+        </div>div>
         
         <div class="column" data-column="Waiting on Contract">
-              <div class="column-title">Waiting on Contract</div>
-              <div class="cards" id="Waiting on Contract"></div>
-              <button class="add-card-btn">+ ADD CANDIDATE</button>
-        </div>
+              <div class="column-title">Waiting on Contract</div>div>
+              <div class="cards" id="Waiting on Contract"></div>div>
+              <button class="add-card-btn">+ ADD CANDIDATE</button>button>
+        </div>div>
         
         <div class="column" data-column="Onboarding Started">
-              <div class="column-title">Onboarding Started</div>
-              <div class="cards" id="Onboarding Started"></div>
-              <button class="add-card-btn">+ ADD CANDIDATE</button>
-        </div>
+              <div class="column-title">Onboarding Started</div>div>
+              <div class="cards" id="Onboarding Started"></div>div>
+              <button class="add-card-btn">+ ADD CANDIDATE</button>button>
+        </div>div>
         
         <div class="column" data-column="Onboarding Completed">
-              <div class="column-title">Onboarding Completed</div>
-              <div class="cards" id="Onboarding Completed"></div>
-              <button class="add-card-btn">+ ADD CANDIDATE</button>
-        </div>
-    </div>
+              <div class="column-title">Onboarding Completed</div>div>
+              <div class="cards" id="Onboarding Completed"></div>div>
+              <button class="add-card-btn">+ ADD CANDIDATE</button>button>
+        </div>div>
+    </div>div>
     
     <div id="addModal" class="modal">
         <div class="modal-content">
-              <span class="close">×</span>
+              <span class="close">×</span>span>
               <h2>Add New Candidate</h2>
               <input type="text" id="candidateName" placeholder="Candidate Name">
               <select id="candidateColumn">
-                      <option value="">Select Column</option>
-                      <option value="Interested">Interested</option>
-                      <option value="Interview Scheduled">Interview Scheduled</option>
-                      <option value="Waiting on Contract">Waiting on Contract</option>
-                      <option value="Onboarding Started">Onboarding Started</option>
-                      <option value="Onboarding Completed">Onboarding Completed</option>
-              </select>
-              <button onclick="addCandidate()">Add Candidate</button>
-        </div>
-    </div>
+                      <option value="">Select Column</option>option>
+                      <option value="Interested">Interested</option>option>
+                      <option value="Interview Scheduled">Interview Scheduled</option>option>
+                      <option value="Waiting on Contract">Waiting on Contract</option>option>
+                      <option value="Onboarding Started">Onboarding Started</option>option>
+                      <option value="Onboarding Completed">Onboarding Completed</option>option>
+              </select>select>
+              <button onclick="addCandidate()">Add Candidate</button>button>
+        </div>div>
+    </div>div>
     
     <div id="detailsModal" class="modal">
         <div class="modal-content">
-              <span class="close">×</span>
+              <span class="close">×</span>span>
               <h2 id="modalTitle"></h2>
               <h3>Add Note</h3>
               <textarea id="noteText" placeholder="Add a note..."></textarea>
-              <label for="noteCategory">Category:</label>
+              <label for="noteCategory">Category:</label>label>
               <select id="noteCategory">
-                      <option value="Info">Info</option>
-                      <option value="Meeting Held">Meeting Held</option>
-              </select>
-              <button onclick="addNote()">Add Note</button>
-              <div id="notesContainer" style="margin-top: 20px;"></div>
-              <div id="remindersContainer" style="margin-top: 20px;"></div>
-              <button onclick="deleteCard()" style="background-color: #d32f2f; margin-left: 10px;">Delete Card</button>
-              <button onclick="closeDetailsModal()">Close</button>
-        </div>
-    </div>
+                      <option value="Info">Info</option>option>
+                      <option value="Meeting Held">Meeting Held</option>option>
+              </select>select>
+              <button onclick="addNote()">Add Note</button>button>
+              <div id="notesContainer" style="margin-top: 20px;"></div>div>
+              <div id="remindersContainer" style="margin-top: 20px;"></div>div>
+              <button onclick="deleteCard()" style="background-color: #d32f2f; margin-left: 10px;">Delete Card</button>button>
+              <button onclick="closeDetailsModal()">Close</button>button>
+        </div>div>
+    </div>div>
     
     <script>
           const firebaseConfig = {
@@ -186,6 +189,55 @@
                                                       "Onboarding Completed": []
                                         };
                             }
+                  }
+          }
+
+          function importLocalStorage() {
+                  const savedData = localStorage.getItem('candidates');
+                  if (!savedData) {
+                            alert('No stored data found in this browser. You may need to use this feature in the browser where the data was originally stored.');
+                            return;
+                  }
+
+                  try {
+                            const localData = JSON.parse(savedData);
+
+                            // Create a map of existing candidate IDs to avoid duplicates
+                            const existingIds = new Set();
+                            Object.values(candidates).forEach(columnCandidates => {
+                                        columnCandidates.forEach(candidate => {
+                                                      existingIds.add(candidate.id);
+                                        });
+                            });
+
+                            // Merge local data with Firebase data
+                            let mergedCount = 0;
+                            Object.keys(localData).forEach(column => {
+                                        if (!candidates[column]) {
+                                                      candidates[column] = [];
+                                        }
+
+                                        localData[column].forEach(candidate => {
+                                                      // Only add if this candidate ID doesn't already exist
+                                                      if (!existingIds.has(candidate.id)) {
+                                                                      candidates[column].push(candidate);
+                                                                      mergedCount++;
+                                                      }
+                                        });
+                            });
+
+                            // Save merged data to Firebase
+                            if (firebaseReady && db) {
+                                        saveCandidates();
+                                        alert(`Successfully imported ${mergedCount} candidate(s) from stored data! The data is now shared across all users.`);
+                                        initBoard();
+                            } else {
+                                        alert('Firebase is not available. Data has been loaded locally.');
+                                        initBoard();
+                            }
+                  } catch (error) {
+                            console.error('Error importing data:', error);
+                            alert('Error importing data: ' + error.message);
                   }
           }
 
